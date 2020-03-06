@@ -1,6 +1,8 @@
 # swiftui-guide
 
-## Simple text field
+## Components
+
+### Simple text field
 ```swift
 struct ContentView: View {
     var body: some View {
@@ -15,7 +17,7 @@ struct ContentView: View {
 }
 ```
 
-## TextField
+### TextField
 Simple TextField with rounded border
 ```swift 
 TextField("Text placeholder", text: $text)
@@ -30,13 +32,13 @@ TextField("Text placeholder", text: $text)
             .strokeBorder(Color.blue, lineWidth: 5))
 ```
 
-## SecureField
+### SecureField
 Secured input
 ```swift 
 SecureField("Enter password", text: $password)
 ```
 
-## TextView
+### TextView
 If you need multiline text input you have to use UITextView from UIKit
 ```swift
 struct TextView: UIViewRepresentable {
@@ -93,7 +95,7 @@ struct ContentView: View {
 ```
 
 
-## Image
+### Image
 System image fits and fills frame region
 
 <img src="images/image0.fit.png" height="200">
@@ -160,7 +162,7 @@ struct ContentView: View {
 }
 ```
 
-## Button
+### Button
 
 Simple counter exmaple with Text and Button components
 ```swift
@@ -181,6 +183,9 @@ struct ContentView: View {
 ```
 
 Button with background color and round corners
+
+<img src="images/button0.png" width="300">
+
 ```swift
 Button(action:{
     self.counter += 1
@@ -194,7 +199,9 @@ Button(action:{
 .cornerRadius(10)
 ```
 
-FloatingActionButton example
+FloatingActionButton
+
+<img src="images/fab.png" width="50">
 
 ```swift
 Button(action:{
@@ -208,7 +215,7 @@ Button(action:{
 .clipShape(Circle())
 ```
 
-## Toggle
+### Toggle
 
 <img src="images/image3.png" width="300">
 
@@ -225,7 +232,7 @@ struct ContentView: View {
 }
 ```
 
-## Picker
+### Picker
 
 Static picker values
 
@@ -245,7 +252,7 @@ struct ContentView: View {
 }
 ```
 
-Static from values list.
+Static from values list
 
 ```swift
 struct ContentView: View {
@@ -263,15 +270,25 @@ struct ContentView: View {
 }
 ```
 
+To hide label use `.labelsHidden()` and `EmptyView()` in label
+
+```swift
+Picker(selection: $index, label: EmptyView()) {
+    ForEach(values, id:\.self) { value in
+        Text(value)
+    }
+}.labelsHidden()
+```
+
 You can use different styles. Default style is `WheelPickerStyle`, but another styles may be used in `.pickerStyle()`. For iOS only  `WheelPickerStyle` and `SegmentedPickerStyle` are available. 
 
 SegmentedPickerStyle
 
 <img src="images/image5.png" width="300">
 
-## DatePicker
+### DatePicker
 
-DatePicker allows to select date in range. the range can be set using dates range.
+`DatePicker` allows to select date in range. the range can be set using dates range.
 
 <img src="images/image6.png" width="300">
 
@@ -307,9 +324,12 @@ DatePicker("Date",
     )
 ```
 
-## Slider
+### Slider
 
 Slider selects values in range. By default range is 0.0...1.0 but you can change  it with `in` and `step` properties
+
+<img src="images/slider.png" width="300">
+
 ```swift
 struct ContentView: View {
     @State var progress = 0.0
@@ -322,8 +342,10 @@ struct ContentView: View {
 }
 ```
 
-## Stepper
+### Stepper
 Stepper allows increment and decrement value
+
+<img src="images/stepper.png" width="300">
 
 ```swift
 struct ContentView: View {
@@ -368,3 +390,239 @@ struct ContentView: View {
     }
 }
 ```
+
+## Layout
+
+### Stacks
+
+Use `VStack`, `HStack` and `ZStack`  to organize components vertically, horizontally or on the Z axis. Use `aligment` and `spacing` to set elements positions in the stack.
+
+```swift
+struct ContentView: View {
+    var body: some View {
+        VStack(alignment: .center) {
+            HStack(alignment: .top, spacing: 0) {
+                Text("Text 1")
+                Text("Text 2")
+            }
+            Text("Text 3")
+            Image(systemName: "cloud.sun.fill")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .foregroundColor(.red)
+                .frame(width: 300, height: 300, alignment: .center)
+                .border(Color.black,width: 5)
+        }
+    }
+}
+```
+
+### Spacer
+`Spacer` expands all available space along the major axis of parent stack.
+
+```swift
+HStack {
+    Text("Hello")
+    Spacer()
+    Text("world")
+}
+```
+
+### Divider
+UI component which separates UI elements
+
+```swift
+VStack {
+    Text("Hello")
+    Divider()
+    Text("world")
+}
+```
+
+### Group
+Groups UI components
+
+```swift
+Group {
+    Text("Hello world")
+    Image(systemName: "cloud.sun.fill")
+}
+```
+### ListList of elements arranged in a single column
+
+```swift
+List {
+    Text("Item 1")
+    Button(action:{}) {
+            Text ("Item 2")
+        }.padding()
+}
+```
+`List` from range
+
+<img src="images/list0.png" width="300">
+
+```swift
+List (1..<20) { index in
+    Text("Item \(index)")
+}
+```
+
+`List` from strings list
+
+```swift
+struct ContentView: View {
+    let list = ["1", "2", "3"]
+    var body: some View {
+        List(list) { item in
+            Text(item)
+        }
+    }
+}
+```
+
+To use complex objects you need to set some field as `id`
+
+<img src="images/list1.png" width="300">
+
+```swift
+struct Icon {
+    let id = UUID()
+    var name:String
+}
+
+struct ContentView: View {
+    let icons = [
+        Icon(name: "cloud.sun.fill"),
+        Icon(name: "cloud.sun.rain.fill"),
+        Icon(name: "cloud.sun.bolt.fill")
+    ]
+    var body: some View {
+        List(icons, id:\.id) { icon in
+            HStack {
+                Image(systemName: icon.name)
+                Text(icon.name)
+            }
+        }
+    }
+}
+```
+
+### ForEach
+Use `ForEach` to create list of views in a loop. It seems `List` but may be used more flexibly.
+
+<img src="images/foreach.png" width="300">
+
+```swift
+struct Icon {
+    let id = UUID()
+    var name:String
+}
+
+struct ContentView: View {
+    let icons = [
+        Icon(name: "cloud.sun.fill"),
+        Icon(name: "cloud.sun.rain.fill"),
+        Icon(name: "cloud.sun.bolt.fill")
+    ]
+    var body: some View {
+        VStack {
+            ForEach(icons, id:\.id) { icon in
+                HStack {
+                    Image(systemName: icon.name)
+                    Text(icon.name)
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
+            }
+        }
+    }
+}
+```
+
+## ScrollView
+
+Scrollable view
+
+<img src="images/scrollview0.png" width="300">
+
+```swift
+var body: some View {
+        ScrollView {
+            VStack {
+                ForEach(1..<50){ index in
+                    Text("\(index)")
+                        .padding()
+                        .frame(width: 100, height: 50, alignment: .center)
+                        .border(Color.black,width: 5)
+                }
+            }
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(1..<50){ index in
+                        Text("\(index)")
+                            .padding()
+                            .frame(width: 80, height: 80, alignment: .center)
+                            .border(Color.black,width: 5)
+                    }
+                }
+            }
+        }
+    }
+```
+
+### Form
+
+Container which groups components for data entry. For example settings, user forms, etc.
+
+<img src="images/form.png" width="300">
+
+```swift
+struct ContentView: View {
+    @State var email = ""
+    @State var address = ""
+    
+    var body: some View {
+        Form {
+            Section(header: Text("header").font(.caption), footer: Text("footer").font(.caption)) {
+                TextField("email", text:$email)
+                TextField("address", text:$address)
+            }
+        }
+    }
+}
+```
+
+### TabView
+Allows switch between views
+
+<img src="images/tabbar.png" width="300">
+
+```swift
+struct ContentView: View {
+    var body: some View {
+        TabView {
+            VStack{Image("SalvadorDali")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 300, height: 300, alignment: .center)
+                .clipShape(Circle())
+                .overlay(Circle().stroke(Color.white, lineWidth: 5))
+                .shadow(radius: 10)}
+                .tabItem({
+                    Image(systemName: "star")
+                    Text("First tab")
+                })
+                .tag(0)
+            List(1..<30) { index in
+                Text("Item \(index)")
+            }
+            .tabItem({
+                Image(systemName: "star.fill")
+                Text("Second tab")
+            })
+                .tag(0)
+        }
+    }
+}
+```
+
