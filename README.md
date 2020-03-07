@@ -448,7 +448,9 @@ Group {
     Image(systemName: "cloud.sun.fill")
 }
 ```
-### ListList of elements arranged in a single column
+### List
+
+List of elements arranged in a single column
 
 ```swift
 List {
@@ -626,3 +628,50 @@ struct ContentView: View {
 }
 ```
 
+### NavigationView and NavigationLink
+
+Allows represent views stack. To switch View use `NavigationLink` with view as destination. You need to use `.buttonStyle(PlainButtonStyle())` for images and buttons if you don't want to see blue overlay color. To set title use `.navigationBarTitle()`.
+
+<img src="images/mainScreen.png" width="300">     <img src="images/ImageScreen.png" width="300">
+
+```swift
+struct ImageView:View {
+    var image:String
+    
+    var body: some View {
+        Image(image)
+            .resizable()
+            .scaledToFit()
+    }
+}
+
+struct ContentView: View {
+    private let images = ["image1","image2","image3","image4","image5","image6","image7"]
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack{
+                    ForEach(images, id:\.self) { image in
+                        NavigationLink(destination: ImageView(image: image)) {
+                            Image(image)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 300, height: 300, alignment: .center)
+                                .clipped()
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
+                }
+            }.navigationBarTitle("Images gallery")
+        }
+    }
+}
+```
+
+If you want to see navigationBarTitle in old style, use `displayMode: .inline`
+
+```swift 
+    ScrollView {
+        //...
+    }.navigationBarTitle("Images gallery", displayMode: .inline)
+```
