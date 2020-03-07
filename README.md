@@ -1,8 +1,46 @@
-# swiftui-guide
+# SwiftUI usage guide <!-- omit in toc -->
 
-## Components
+# Table of contents  <!-- omit in toc -->
 
-### Simple text field
+- [About](#about)
+- [Components](#components)
+  - [TextField](#textfield)
+  - [SecureField](#securefield)
+  - [TextView](#textview)
+  - [Image](#image)
+  - [Button](#button)
+  - [Toggle](#toggle)
+  - [Picker](#picker)
+  - [DatePicker](#datepicker)
+  - [Slider](#slider)
+  - [Stepper](#stepper)
+- [Layout](#layout)
+  - [Stacks](#stacks)
+  - [Spacer](#spacer)
+  - [Divider](#divider)
+  - [Group](#group)
+  - [List](#list)
+  - [ForEach](#foreach)
+  - [ScrollView](#scrollview)
+  - [Form](#form)
+  - [TabView](#tabview)
+  - [NavigationView and NavigationLink](#navigationview-and-navigationlink)
+  - [Alert](#alert)
+  - [Modal](#modal)
+  - [ActionSheet](#actionsheet)
+- [Tips annd tricks](#tips-annd-tricks)
+  - [Resize window when keybord is shown](#resize-window-when-keybord-is-shown)
+  - [Hide keyboard](#hide-keyboard)
+
+# About
+
+This document contains examples of SwiftUI components and views usage. This is a set of usage examples that I found useful to study SwuftyUI basics.
+
+# Components
+
+## TextField
+
+Simple text field
 ```swift
 struct ContentView: View {
     var body: some View {
@@ -17,7 +55,6 @@ struct ContentView: View {
 }
 ```
 
-### TextField
 Simple TextField with rounded border
 ```swift 
 TextField("Text placeholder", text: $text)
@@ -32,13 +69,13 @@ TextField("Text placeholder", text: $text)
             .strokeBorder(Color.blue, lineWidth: 5))
 ```
 
-### SecureField
+## SecureField
 Secured input
 ```swift 
 SecureField("Enter password", text: $password)
 ```
 
-### TextView
+## TextView
 If you need multiline text input you have to use UITextView from UIKit
 ```swift
 struct TextView: UIViewRepresentable {
@@ -95,7 +132,7 @@ struct ContentView: View {
 ```
 
 
-### Image
+## Image
 System image fits and fills frame region
 
 <img src="images/image0.fit.png" height="200">
@@ -162,7 +199,7 @@ struct ContentView: View {
 }
 ```
 
-### Button
+## Button
 
 Simple counter exmaple with Text and Button components
 ```swift
@@ -215,7 +252,7 @@ Button(action:{
 .clipShape(Circle())
 ```
 
-### Toggle
+## Toggle
 
 <img src="images/image3.png" width="300">
 
@@ -232,7 +269,7 @@ struct ContentView: View {
 }
 ```
 
-### Picker
+## Picker
 
 Static picker values
 
@@ -286,7 +323,7 @@ SegmentedPickerStyle
 
 <img src="images/image5.png" width="300">
 
-### DatePicker
+## DatePicker
 
 `DatePicker` allows to select date in range. the range can be set using dates range.
 
@@ -324,7 +361,7 @@ DatePicker("Date",
     )
 ```
 
-### Slider
+## Slider
 
 Slider selects values in range. By default range is 0.0...1.0 but you can change  it with `in` and `step` properties
 
@@ -342,7 +379,7 @@ struct ContentView: View {
 }
 ```
 
-### Stepper
+## Stepper
 Stepper allows increment and decrement value
 
 <img src="images/stepper.png" width="300">
@@ -392,9 +429,9 @@ struct ContentView: View {
 }
 ```
 
-## Layout
+# Layout
 
-### Stacks
+## Stacks
 
 Use `VStack`, `HStack` and `ZStack`  to organize components vertically, horizontally or on the Z axis. Use `aligment` and `spacing` to set elements positions in the stack.
 
@@ -418,7 +455,7 @@ struct ContentView: View {
 }
 ```
 
-### Spacer
+## Spacer
 `Spacer` expands all available space along the major axis of parent stack.
 
 ```swift
@@ -429,7 +466,7 @@ HStack {
 }
 ```
 
-### Divider
+## Divider
 UI component which separates UI elements
 
 ```swift
@@ -440,7 +477,7 @@ VStack {
 }
 ```
 
-### Group
+## Group
 Groups UI components
 
 ```swift
@@ -449,7 +486,7 @@ Group {
     Image(systemName: "cloud.sun.fill")
 }
 ```
-### List
+## List
 
 List of elements arranged in a single column
 
@@ -511,7 +548,7 @@ struct ContentView: View {
 }
 ```
 
-### ForEach
+## ForEach
 Use `ForEach` to create list of views in a loop. It seems `List` but may be used more flexibly.
 
 <img src="images/foreach.png" width="300">
@@ -550,30 +587,30 @@ Scrollable view
 
 ```swift
 var body: some View {
-        ScrollView {
-            VStack {
+    ScrollView {
+        VStack {
+            ForEach(1..<50){ index in
+                Text("\(index)")
+                    .padding()
+                    .frame(width: 100, height: 50, alignment: .center)
+                    .border(Color.black,width: 5)
+            }
+        }
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack {
                 ForEach(1..<50){ index in
                     Text("\(index)")
                         .padding()
-                        .frame(width: 100, height: 50, alignment: .center)
+                        .frame(width: 80, height: 80, alignment: .center)
                         .border(Color.black,width: 5)
-                }
-            }
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    ForEach(1..<50){ index in
-                        Text("\(index)")
-                            .padding()
-                            .frame(width: 80, height: 80, alignment: .center)
-                            .border(Color.black,width: 5)
-                    }
                 }
             }
         }
     }
+}
 ```
 
-### Form
+## Form
 
 Container which groups components for data entry. For example settings, user forms, etc.
 
@@ -595,7 +632,7 @@ struct ContentView: View {
 }
 ```
 
-### TabView
+## TabView
 Allows switch between views
 
 <img src="images/tabbar.png" width="300">
@@ -629,11 +666,11 @@ struct ContentView: View {
 }
 ```
 
-### NavigationView and NavigationLink
+## NavigationView and NavigationLink
 
 Allows represent views stack. To switch View use `NavigationLink` with view as destination. You need to use `.buttonStyle(PlainButtonStyle())` for images and buttons if you don't want to see blue overlay color. To set title use `.navigationBarTitle()`.
 
-<img src="images/mainScreen.png" width="300">     <img src="images/ImageScreen.png" width="300">
+<img src="images/mainScreen.png" width="200">     <img src="images/ImageScreen.png" width="200">
 
 ```swift
 struct ImageView:View {
@@ -677,12 +714,124 @@ If you want to see navigationBarTitle in old style, use `displayMode: .inline`
     }.navigationBarTitle("Images gallery", displayMode: .inline)
 ```
 
-## Tips annd tricks
+## Alert
 
-### Use keyboard
+Default alert
+
+<img src="images/alert1.png" width="200">
+
+```swift
+@State var isAlert = false
+    
+var body: some View {
+    VStack (alignment: .center) {
+        Button(action: {
+            self.isAlert = true
+        }) {
+            Text("Alert").padding().background(Color.red).foregroundColor(Color.white)
+        }.alert(
+            isPresented: $isAlert,
+            content: {
+                Alert(title: Text("Title"),
+                        message: Text("Message"),
+                        dismissButton: .default(Text("OK"))
+                )
+        })
+    }
+}
+```
+
+Custom buttons
+
+<img src="images/alert2.png" width="200">
+
+```swift
+Alert(
+    title: Text("Title"),
+    message: Text("Message"),
+    primaryButton: .default(Text("OK")){print("OK pressed")},
+    secondaryButton: .cancel(){print("Cancel pressed")}
+)
+```
+
+## Modal
+
+Show modal activity
+
+<img src="images/modal1.png" width="200"> <img src="images/modal2.png" width="200">
+
+```swift
+struct ContentView: View {
+    private let images = ["image1","image2","image3","image4","image5","image6","image7"]
+    @State var isModalActive:Bool = false
+    @State var image = ""
+    var body: some View {
+        ScrollView {
+            VStack{
+                ForEach(images, id:\.self) { image in
+                    Image(image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 300, height: 300, alignment: .center)
+                        .clipped()
+                        .onTapGesture {
+                            self.isModalActive = true
+                            self.image = image
+                        }
+                        .sheet(isPresented: self.$isModalActive, content: {
+                            self.modal
+                        })
+                }
+            }
+        }
+    }
+    
+    var modal: some View {
+        Image(image)
+        .resizable()
+        .scaledToFit()
+    }
+}
+```
+
+## ActionSheet
+
+Displays action sheet
+
+<img src="images/actions.png" width="200">
+
+```swift
+struct ContentView: View {
+    @State var isActionsActive:Bool = false
+    
+    var body: some View {
+        VStack{
+            Button("Action Sheet") {
+                self.isActionsActive = true
+            }.actionSheet(isPresented: $isActionsActive, content: {
+                ActionSheet(title: Text("Title"),
+                            message: Text("Message"),
+                            buttons: [
+                                .default(Text("OK"), action: {
+                                    print("OK pressed")
+                                }),
+                                .destructive(Text("Delete"), action: {
+                                    print("Delete pressed")
+                                })
+                    ]
+                )
+            })
+        }
+    }
+}
+```
+
+# Tips annd tricks
+
+## Resize window when keybord is shown
 Usually need to change view size when keyboard is shown. To do this create observer to get keyboard notifications and change view bottom padding dynamically.
 
-<img src="images/keyboard1.png" width="300"> <img src="images/keyboard2.png" width="300">
+<img src="images/keyboard1.png" width="200"> <img src="images/keyboard2.png" width="200">
 
 ```swift
 import Foundation
@@ -725,5 +874,30 @@ struct ContentView: View {
         .animation(.easeInOut(duration:0.2))
     }
 }
-
 ```
+
+## Hide keyboard
+
+To hide keyboard on component tap create `endEditing()` method in `View`
+
+```swift
+extension View {
+    func endEditing() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+
+struct ContentView: View {
+    @State var text = ""
+    
+    var body: some View {
+        VStack (alignment: .center) {
+            TextField("Text", text: $text)
+                .padding()
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .onTapGesture { self.endEditing() }
+        }
+    }
+}
+```
+
