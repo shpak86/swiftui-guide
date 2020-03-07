@@ -364,16 +364,17 @@ struct ContentView: View {
     @State var quantity = 0
     
     var body: some View {
-        Stepper(value: $quantity, in: 0...10, label: { HStack{
-            Text("Quantity ")
-            Text("\(quantity)")
+        Stepper(value: $quantity, in: 0...10, label: { 
+            HStack {
+                Text("Quantity ")
+                Text("\(quantity)")
             }
         }).padding()
     }
 }
 ```
 
-God mode is on
+Custom increment and decrement
 
 ```swift
 struct ContentView: View {
@@ -545,7 +546,7 @@ struct ContentView: View {
 
 Scrollable view
 
-<img src="images/scrollview0.png" width="300">
+<img src="images/scrollview0.png" width="200">
 
 ```swift
 var body: some View {
@@ -674,4 +675,55 @@ If you want to see navigationBarTitle in old style, use `displayMode: .inline`
     ScrollView {
         //...
     }.navigationBarTitle("Images gallery", displayMode: .inline)
+```
+
+## Tips annd tricks
+
+### Use keyboard
+Usually need to change view size when keyboard is shown. To do this create observer to get keyboard notifications and change view bottom padding dynamically.
+
+<img src="images/keyboard1.png" width="300"> <img src="images/keyboard2.png" width="300">
+
+```swift
+import Foundation
+import SwiftUI
+import Combine
+
+class KeyboardObserver: ObservableObject {
+    
+    private var cancellable: AnyCancellable?
+    
+    @Published private(set) var keyboardHeight: CGFloat = 0
+    
+    let keyboardWillShow = NotificationCenter.default
+        .publisher(for: UIResponder.keyboardWillShowNotification)
+        .compactMap { ($0.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect)?.height }
+    
+    let keyboardWillHide = NotificationCenter.default
+        .publisher(for: UIResponder.keyboardWillHideNotification)
+        .map { _ -> CGFloat in 0 }
+    
+    init() {
+        cancellable = Publishers.Merge(keyboardWillShow, keyboardWillHide)
+            .subscribe(on: RunLoop.main)
+            .assign(to: \.keyboardHeight, on: self)
+    }
+}
+
+struct ContentView: View {
+    @ObservedObject var keyboardObserver = KeyboardObserver()
+    @State var text = ""
+    
+    var body: some View {
+        VStack (alignment: .center) {
+            Spacer()
+            TextField("Text", text: $text)
+                .padding()
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+        }
+        .padding(.bottom, keyboardObserver.keyboardHeight)
+        .animation(.easeInOut(duration:0.2))
+    }
+}
+
 ```
