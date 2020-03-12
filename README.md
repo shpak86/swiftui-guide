@@ -548,6 +548,29 @@ struct ContentView: View {
 }
 ```
 
+Use `.onDelete` for swipe to delete
+
+<img src="images/list2.png" width="300">
+
+```swift
+struct ContentView: View {
+    @State private var galaxies = ["Andromeda Galaxy", "Backward Galaxy", "Hockey Stick Galaxies", "Lindsay-Shapley Ring"]
+    
+    var body: some View {
+        List {
+            ForEach (galaxies, id:\.self) { galaxy in
+                Text ("\(galaxy)")
+            }.onDelete(perform: delete)
+        }
+    }
+    
+    func delete(at offsets: IndexSet) {
+        galaxies.remove(atOffsets: offsets)
+    }
+    
+}
+```
+
 ## ForEach
 Use `ForEach` to create list of views in a loop. It seems `List` but may be used more flexibly.
 
