@@ -1,8 +1,9 @@
 # SwiftUI usage guide <!-- omit in toc -->
 
+This document contains examples of SwiftUI components and views usage. This is a set of usage examples that I found useful to study SwuftyUI basics.
+
 # Table of contents  <!-- omit in toc -->
 
-- [About](#about)
 - [Components](#components)
   - [TextField](#textfield)
   - [SecureField](#securefield)
@@ -31,10 +32,6 @@
 - [Tips annd tricks](#tips-annd-tricks)
   - [Resize window when keybord is shown](#resize-window-when-keybord-is-shown)
   - [Hide keyboard](#hide-keyboard)
-
-# About
-
-This document contains examples of SwiftUI components and views usage. This is a set of usage examples that I found useful to study SwuftyUI basics.
 
 # Components
 
@@ -70,12 +67,14 @@ TextField("Text placeholder", text: $text)
 ```
 
 ## SecureField
+
 Secured input
 ```swift 
 SecureField("Enter password", text: $password)
 ```
 
 ## TextView
+
 If you need multiline text input you have to use UITextView from UIKit
 ```swift
 struct TextView: UIViewRepresentable {
@@ -133,6 +132,7 @@ struct ContentView: View {
 
 
 ## Image
+
 System image fits and fills frame region
 
 <img src="images/image0.fit.png" height="200">
@@ -271,7 +271,7 @@ struct ContentView: View {
 
 ## Picker
 
-Static picker values
+Static values picker
 
 <img src="images/image4.png" width="300">
 
@@ -289,7 +289,7 @@ struct ContentView: View {
 }
 ```
 
-Static from values list
+Static picker from values list
 
 ```swift
 struct ContentView: View {
@@ -456,6 +456,7 @@ struct ContentView: View {
 ```
 
 ## Spacer
+
 `Spacer` expands all available space along the major axis of parent stack.
 
 ```swift
@@ -467,6 +468,7 @@ HStack {
 ```
 
 ## Divider
+
 UI component which separates UI elements
 
 ```swift
@@ -478,6 +480,7 @@ VStack {
 ```
 
 ## Group
+
 Groups UI components
 
 ```swift
@@ -486,6 +489,7 @@ Group {
     Image(systemName: "cloud.sun.fill")
 }
 ```
+
 ## List
 
 List of elements arranged in a single column
@@ -572,6 +576,7 @@ struct ContentView: View {
 ```
 
 ## ForEach
+
 Use `ForEach` to create list of views in a loop. It seems `List` but may be used more flexibly.
 
 <img src="images/foreach.png" width="300">
@@ -656,6 +661,7 @@ struct ContentView: View {
 ```
 
 ## TabView
+
 Allows switch between views
 
 <img src="images/tabbar.png" width="300">
@@ -852,6 +858,7 @@ struct ContentView: View {
 # Tips annd tricks
 
 ## Resize window when keybord is shown
+
 Usually need to change view size when keyboard is shown. To do this create observer to get keyboard notifications and change view bottom padding dynamically.
 
 <img src="images/keyboard1.png" width="200"> <img src="images/keyboard2.png" width="200">
