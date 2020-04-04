@@ -668,8 +668,9 @@ Allows switch between views
 
 ```swift
 struct ContentView: View {
+    @State var selection = 0
     var body: some View {
-        TabView {
+        TabView(selection: $selection) {
             VStack{Image("SalvadorDali")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
@@ -689,7 +690,7 @@ struct ContentView: View {
                 Image(systemName: "star.fill")
                 Text("Second tab")
             })
-                .tag(0)
+                .tag(1)
         }
     }
 }
