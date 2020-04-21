@@ -738,11 +738,71 @@ struct ContentView: View {
 
 If you want to see navigationBarTitle in old style, use `displayMode: .inline`
 
-```swift 
+```swift
     ScrollView {
         //...
     }.navigationBarTitle("Images gallery", displayMode: .inline)
 ```
+
+To add buttons at the top use `navigationBarItems` modifier. You can add several buttons with `HStack`. There is no standard method to pop view from the views stack but you may use next hack with `presentationMode` to go to previous view.
+
+```swift
+struct ContentView: View {
+    var body: some View {
+        NavigationView {
+            VStack {
+                Text("First view")
+                    .font(.title)
+                NavigationLink(destination: SecondView()) {
+                    Text("Go to second view")
+                }
+                .padding()
+            }
+            
+        }.navigationViewStyle(StackNavigationViewStyle())
+    }
+}
+
+struct SecondView: View {
+    @State var counter:Int = 0
+    
+    var body: some View {
+        VStack {
+            Text("Second view")
+                .font(.title)
+            
+            Text("\(self.counter)")
+                .font(.title)
+                .padding()
+        }
+        .navigationBarItems(trailing: HStack {
+            NavigationLink(destination: ThirdView()) {
+                Text("Third view")
+            }
+            Image(systemName: "plus").onTapGesture {
+                self.counter = self.counter + 1
+            }
+        })
+    }
+}
+
+struct ThirdView: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
+    var body: some View {
+        VStack {
+            Text("Third view")
+                .font(.title)
+        }.navigationBarItems(trailing:
+            Text("Pop view")
+                .onTapGesture {
+                    self.presentationMode.wrappedValue.dismiss()
+        })
+    }
+}
+
+```
+
 
 ## Alert
 
